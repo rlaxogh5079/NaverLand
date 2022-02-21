@@ -1,0 +1,5 @@
+*.log
+*__pycache__
+data
+docker_data
+*__init__.py
