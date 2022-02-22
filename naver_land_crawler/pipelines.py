@@ -19,13 +19,13 @@ class NaverLandCrawlerPipeline:
         self.create_TABLE() # 테이블 생성
 
     def create_DB(self): # 데이터 베이스를 생성하는 함수
-        
+
         try:
 
             self.cursor.execute(f'''
                 CREATE DATABASE NAVERHOUSES{CORTARNO}
             ''') # 데이터 베이스가 존재하지 않는다면 생성
-        
+
         except:
 
             pass # 존재한다면 패스
@@ -39,10 +39,6 @@ class NaverLandCrawlerPipeline:
 
         REGION_LIST = csv.reader(open('region.csv','r'))
 
-        len = sum(1 for row in REGION_LIST) # region.csv파일의 길이를 구하는 코드
-        
-        assert len != 0 , "empty region.csv!!" # region.csv가 비어있는지 확인하는 테스트코드
-        
         for region in REGION_LIST:
 
             try:
@@ -63,7 +59,7 @@ class NaverLandCrawlerPipeline:
                     `laundry_dis` smallint UNSIGNED DEFAULT NULL,
                     `inserted_at` timestamp NOT NULL
                 )''') # 테이블이 존재하지 않는다면 테이블 생성 
-            
+
             except pymysql.err.OperationalError: # 테이블이 존재한다면 패스
 
                 pass
@@ -86,7 +82,7 @@ class NaverLandCrawlerPipeline:
         if month_rent!=None: # 만약 집세의 형식이 None이 아니라면(존재한다면)
 
             month_rent = int(month_rent.replace(',','')) # int형식으로 변환
-        
+
         item['_4pyeong'] = int(item['_4pyeong']) # 평수를 int형식으로 전환
 
         for number in range(5):
@@ -94,13 +90,13 @@ class NaverLandCrawlerPipeline:
             if item['_5fac'][number]!=None: # 주변 편의시설들과의 거리가 None이 아니라면(존재한다면)
 
                 item['_5fac'][number] = int(str(item['_5fac'][number]).replace(',','')) # int형식으로 변환
-        
+
 
         self.cursor.execute(f'''
             SELECT * FROM  {dong} WHERE atclNo = %s and inserted_at = %s''',
             (item['_0atclNo'],str(datetime.today())[:10])) # _0atclNo를 가진 데이터를 데이터베이스에서 추출
 
-        result = self.cursor.fetchone()# SELECT 헀던 값을 return SELECT 값이 없으면 None을 Return
+        result = self.cursor.fetchone() # SELECT 헀던 값을 return SELECT 값이 없으면 None을 Return
 
         if result == None: # 데이터가 존재하지않는다면
 
