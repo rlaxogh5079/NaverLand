@@ -6,8 +6,8 @@ from datetime import datetime
 class NaverLandCrawlerPipeline:
 
     def __init__(self):
-        self.db=pymysql.connect(host='mysqlserver',
-                        user='root', # 유저 이름 
+        self.db=pymysql.connect(host="mysqlserver",
+                        user='', # 유저 이름 
                         password='', # 유저 비밀번호
                         charset='utf8',
                         port=3306) # 데이터 베이스에 host,user,password를 활용하여 접근
