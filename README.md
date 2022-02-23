@@ -9,6 +9,12 @@ $ cd ~
 
 $ git clone https://github.com/rlaxogh5079/NaverLand
 
+$ cd ~/NaverLand
+
+$ mkdir data
+
+$ sudo cp -r /var/lib/mysql ~/NaverLand/data
+
 pipelines.py 파일에서 11번째 줄에 password = 에 mysql Root Password를 입력합니다.
 
 spider.py파일에 있는 CORTARNO에 크롤링을 원하는 지역의 고유번호를 적으세요.(기본값 : 1168000000)
@@ -21,23 +27,29 @@ https://new.land.naver.com/api/regions/list?cortarNo=0000000000
 ### Docker 실행
 
 ```
+$ docker run --name mysqlserver -e LC_ALL=C.UTF-8 -e TZ=Asia/Seoul -v ~/NaverLand/data/mysql:/var/lib/mysql -d -p 3306:3306 mysql:8.0.28
+
+우선 위 코드를 작성하여 mysql을 실행시킵니다.
+
+$ docker exec -it mysqlserver mysql -u root -p
+Enter password:
+
+실행 되었다면, 위 코드를 입력하고 기존 MySQL의 비밀번호를 입력해 mysql에 진입합니다.
+
+mysql> create user 계정ID@'%' identified by '계정비밀번호' ;
+
+mysql> grant all privileges on *.* to 계정ID@'%' with grant option;
+
+mysql> flush privileges;
+
+위 코드를 작성한 후 생성한 ID를 pipelines.py파일 10번째 줄에 user=''에 적습니다.
+
 Docker를 실행하기 위해서는 아래코드를 작성합니다.
 
 $ cd ~/NaverLand
 
-$ sudo docker-compose up -d --build
+$ sudo docker build -t {CORTARNO} .
+({CORTARNO}에는 spider.py에서 설정한 CORTARNO를 넣어주세요)
 
-위 코드를 입력하여 Scrapy 코드를 Docker로 실행시킵니다.
-
-$ docker exec -it mysqlserver mysql -u root -p 
-
-위 코드를 입력하여 Docker의 MySQL에 접근할 수 있습니다.
-
-Docker의 naver_land_crawler 이미지는 현재 무한 반복 상태입니다.
-
-만약 무한 반복이 아니라 수동으로 실행하고 싶으시다면 docker-compose.yml 에서
-
-crawler내에 restart: always를 없애시고, 재실행 하시면 됩니다.
-
-그 후 $ docker start naver_land_crawler를 입력하여 수동으로 실행할 수 있습니다.
+$ docker run -d --name naver_land_crawler{CORTARNO} --link mysqlserver {CORTARNO}
 ```
