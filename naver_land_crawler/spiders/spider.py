@@ -6,7 +6,7 @@ HOMECOUNT = 20 # API에서 제공하는 한 페이지에 존재하는 집의 개
 
 item = NaverLandCrawlerItem() # item 변수 선언 
 
-CORTARNO = 1168000000 # 지역 고유 번호 (예시 : 서울특별시 강남구 -> 1168000000)
+CORTARNO = 3017000000 # 지역 고유 번호 (예시 : 서울특별시 강남구 -> 1168000000)
 
 ORIGIN_URL = 'https://m.land.naver.com'
 
@@ -29,10 +29,10 @@ class NaverLandSpider(scrapy.Spider):
         page = response.url.split('=')[-1] # =을 기준으로 스플릿 했을때 제일 뒤에 있는 수, 즉 페이지 현재 페이지 수
 
         if page=='1':
+            
+            assert len(body) != 0 , f"{CORTARNO} is Empty Region!" # CORTARNO 가 유요한 번호인지 체크하는 테스트 코드
 
             assert len(body) == HOMECOUNT , "API changed! check HOMECOUNT!!" # API서버의 구조가 바뀌어 한 페이지에서 제공하는 집의 정보의 개수가 변동됨을 감지하는 테스트코드
-
-            assert len(body) != 0 , f"{CORTARNO} is Empty Region!" # CORTARNO 가 유요한 번호인지 체크하는 테스트 코드
 
         token = response.url.split('=') # '='를 기준으로 나눔
 
