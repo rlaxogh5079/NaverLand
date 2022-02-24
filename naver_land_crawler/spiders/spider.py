@@ -2,11 +2,15 @@ import scrapy, json, csv
 from scrapy import Request
 from naver_land_crawler.items import NaverLandCrawlerItem
 
+t = open("./naver_land_crawler/spiders/CORTARNO.txt","r")
+
 HOMECOUNT = 20 # API에서 제공하는 한 페이지에 존재하는 집의 개수
 
 item = NaverLandCrawlerItem() # item 변수 선언 
 
-CORTARNO = 3017000000 # 지역 고유 번호 (예시 : 서울특별시 강남구 -> 1168000000)
+CORTARNO = t.readline() # 지역 고유 번호 (예시 : 서울특별시 강남구 -> 1168000000)
+
+t.close()
 
 ORIGIN_URL = 'https://m.land.naver.com'
 
