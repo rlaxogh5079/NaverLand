@@ -1,4 +1,4 @@
-FROM python:3.9.7
+FROM python:3.10.2-slim-buster
 
 COPY requirements.txt ./
 COPY . .
@@ -6,4 +6,5 @@ COPY . .
 RUN pip install --upgrade pip
 RUN pip install scrapy
 RUN pip install pymysql
+
 ENTRYPOINT ["/bin/sh","scrapy.sh"]
