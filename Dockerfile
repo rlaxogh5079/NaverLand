@@ -1,6 +1,5 @@
 FROM python:3.10.2-slim-buster
 
-COPY requirements.txt ./
 COPY . .
 
 RUN pip install --upgrade pip
