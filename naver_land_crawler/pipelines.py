@@ -76,22 +76,6 @@ class NaverLandCrawlerPipeline:
 
         month_rent = item['_3price'][2]
 
-
-        item['_0atclNo'] = int(item['_0atclNo']) # 기존의 atclNo를 int형식으로 변환 (데이터 바이트 차지 덜하게 하기 위해)
-
-        if month_rent!=None: # 만약 집세의 형식이 None이 아니라면(존재한다면)
-
-            month_rent = int(month_rent.replace(',','')) # int형식으로 변환
-
-        item['_4pyeong'] = int(item['_4pyeong']) # 평수를 int형식으로 전환
-
-        for number in range(5):
-
-            if item['_5fac'][number]!=None: # 주변 편의시설들과의 거리가 None이 아니라면(존재한다면)
-
-                item['_5fac'][number] = int(str(item['_5fac'][number]).replace(',','')) # int형식으로 변환
-
-
         self.cursor.execute(f'''
             SELECT * FROM  {dong} WHERE atclNo = %s and inserted_at = %s''',
             (item['_0atclNo'],str(datetime.today())[:10])) # _0atclNo를 가진 데이터를 데이터베이스에서 추출
