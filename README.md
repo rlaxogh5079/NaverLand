@@ -17,7 +17,7 @@ $ sudo cp -r /var/lib/mysql ~/NaverLand/data
 
 pipelines.py 파일에서 11번째 줄에 password = 에 mysql Root Password를 입력합니다.
 
-scrapy.sh파일 3번째 줄에 크롤링을 원하는 지역의 고유번호를 적으세요.(기본값 : 1168000000)
+그 후 쉘에다가 export CORTARNO = 크롤링을 원하는 지역의 고유번호 를 적으세요.
 
 https://new.land.naver.com/api/regions/list?cortarNo=0000000000
 
@@ -50,9 +50,5 @@ $ cd ~/NaverLand
 
 $ sudo docker build -t naver_land_crawler .
 
-그 후 CodeRunner를 설치받고 버튼을 클릭해 scrapy.sh파일을 실행시켜 주시면 됩니다.
-
-scrapy.sh 파일 5번째 줄에 docker run 명령어에서 --ip 프록시ip 를 넣는다면 ip를 우회하여 크롤링이 가능합니다.
-
-예) docker run --ip 1.1.1.1 -d --name naver_land_crawler$CORTARNO --link mysqlserver naver_land_crawler
+$ docker run -d -e CORTARNO=$CORTARNO --name naver_land_crawler$CORTARNO --link mysqlserver naver_land_crawler
 ```
