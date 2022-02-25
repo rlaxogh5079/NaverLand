@@ -1,16 +1,12 @@
-import scrapy, json, csv
+import scrapy, json, csv, os
 from scrapy import Request
 from naver_land_crawler.items import NaverLandCrawlerItem
-
-t = open("./naver_land_crawler/spiders/CORTARNO.txt","r")
 
 HOMECOUNT = 20 # API에서 제공하는 한 페이지에 존재하는 집의 개수
 
 item = NaverLandCrawlerItem() # item 변수 선언 
 
-CORTARNO = t.readline() # 지역 고유 번호 (예시 : 서울특별시 강남구 -> 1168000000)
-
-t.close()
+CORTARNO = int(os.environ['CORTARNO']) # 지역 고유 번호 (예시 : 서울특별시 강남구 -> 1168000000)
 
 ORIGIN_URL = 'https://m.land.naver.com'
 
@@ -111,11 +107,11 @@ class NaverLandSpider(scrapy.Spider):
 
         if sort == '월세':
 
-            month_rent = price[2]
+            month_rent = int(price[2].replace('/','').replace(',',''))
  
             item['_3price'].append(deposit) # 만약 sort가 월세라, 보증금(deposit), 집세(month_rent) 가 존재한다면, item['_3price']에 보증금, 집세 추가
 
-            item['_3price'].append(month_rent.replace('/','')) # month_rent에 존재하는 '/'를 제거함 
+            item['_3price'].append(month_rent) # month_rent에 존재하는 '/'를 제거함 
 
         else:
             item['_3price'].append(deposit) # 만약 sort가 월세가 아니라면 집의 가격만 존재, item[_3price]에 가격 추가
