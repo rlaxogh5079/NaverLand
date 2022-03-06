@@ -93,10 +93,11 @@ class NaverLandCrawlerPipeline:
         try:
 
             self.cursor.execute(f'''
+                CREATE TABLE 전세(
                 `atclNo` bigint UNSIGNED NOT NULL,
                 `sort` varchar(4) NOT NULL,
                 `deposit` smallint NOT NULL
-            ''')
+            )''')
 
         except:
 
@@ -107,10 +108,11 @@ class NaverLandCrawlerPipeline:
         try:
 
             self.cursor.execute(f'''
+                CREATE TABLE 매매(
                 `atclNo` bigint UNSIGNED NOT NULL,
                 `sort` varchar(4) NOT NULL,
                 `price` smallint NOT NULL
-            ''')
+            )''')
 
         except:
 
