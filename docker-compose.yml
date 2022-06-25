@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  get_cs:
+    build:
+      context: .
+    restart: always
+
+    
